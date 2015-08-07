@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>VintageVR</title>
+
+	<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/coelacanth" type="text/css" />
+	<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/chicagoflf" type="text/css" />
+
+	<style>
+		body {
+			background-color: #321513;
+		}
+
+		h2 {
+			color: #b2a992;
+			font-size: 5em;
+			font-family: 'ChicagoFLFRegular';
+			font-weight: normal;
+			font-style: normal;
+			text-align: center;
+		}
+
+		h3 {
+			color: #b2a992;
+			font-size: 3em;
+			font-family: 'CoelacanthCaptionRegular';
+			font-weight: normal;
+			font-style: normal;
+			text-align: center;
+		}
+
+		h4 {
+			color: #b2a992;
+			font-size: 1.5em;
+			font-family: 'CoelacanthItalic';
+			font-weight: normal;
+			font-style: italic;
+			text-align: center;
+		}
+
+		#stereoview {
+			position: fixed;
+			left: 0;
+			top: 0;
+			margin: 0;
+			padding: 0;
+			z-index: 0;
+			opacity: 1;
+			transition: 1s;
+		}
+
+		#page {
+			height: 100.1%;
+			width: 100%;
+			position: absolute;
+			overflow: hidden;
+		}
+
+		.captionText {
+			color: #b2a37d;
+			font-size: 2.2em;
+			font-family: 'CoelacanthCaptionRegular';
+			font-weight: normal;
+			font-style: normal;
+			text-align: center;
+			height: 4em;
+			width: 40%;
+			position: fixed;
+			top: 33%;
+			margin: 5%;
+			z-index: 2;
+		}
+
+		#captionBox {
+			height: 100%;
+			width: 100%;
+			position: fixed;
+			top: 0;
+			z-index: 1;
+		}
+
+		#textLeft {
+			left: 0;
+			opacity: 1;
+			transition: 1s;
+		}
+
+		#textRight {
+			left: 50%;
+			opacity: 1;
+			transition: 1s;
+		}
+
+		.solid {
+			background-color: #321513;
+			opacity: 0.99;
+			transition: 0.1s;
+		}
+
+		.clear {
+			opacity: 0;
+			transition: 2s;
+		}
+	</style>
+	<script type="text/javascript" src="js/cardlist.js"></script>
+	<script type="text/javascript" src="js/distort.js"></script>
+
+</head>
+
+<body>
+	<div id="page">
+
+		<canvas id="stereoview" class="show"></canvas>
+
+		<h2>Vintage VR Examples</h2>
+		<h3>(tap to advance)</h3>
+		<h4>for best results: view landscape via DYI-VR, or parallel freeview.</h4>
+
+		<audio id="click" preload="auto">
+			<source src="slide_advance.m4a" type="audio/mp4" /> Your browser does not support mp4 files in the audio element.
+		</audio>
+
+		<div class="captionText" id="textLeft"></div>
+		<div class="captionText" id="textRight"></div>
+		<div id="captionBox" class="clear"></div>
+
+	</div>
+
+	<script type="text/javascript">
+		var curimg = 0;
+		var card = new Image();
+		var click = null;
+		var caption = "";
+
+		var cL = document.createElement('canvas');
+		var cR = document.createElement('canvas');
+
+		var textLeft = document.getElementById('textLeft');
+		var textRight = document.getElementById('textRight');
+		var cBox = document.getElementById('captionBox');
+
+		var wW = window.innerWidth;
+		var wH = window.innerHeight;
+
+		var cW = wW * 0.5;
+		var cH = wH;
+
+		cL.width = cW;
+		cL.height = cH;
+		cR.width = cW;
+		cR.height = cH;
+
+		cxL = cL.getContext('2d');
+		cxR = cR.getContext('2d');
+
+		var pageView = document.getElementById('stereoview');
+		pageView.width = wW;
+		pageView.height = wH;
+		cxM = pageView.getContext('2d');
+
+		function onDocumentMouseDown(event) {
+			event.preventDefault();
+
+			if (cBox.getAttribute('class') === 'clear') {
+				cBox.setAttribute('class', 'solid');
+				caption = textarray[curimg];
+				textLeft.innerHTML = caption;
+				textRight.innerHTML = caption;
+				advanceSlide();
+			} else {
+				textLeft.innerHTML = "";
+				textRight.innerHTML = "";
+				cBox.setAttribute('class', 'clear');
+			}
+		}
+
+		card.onload = function() {
+
+			setCardPixels();
+
+		};
+
+		advanceSlide = function() {
+
+			shutterSound();
+
+			card.src = "cards/" + galleryarray[curimg];
+			caption = textarray[curimg];
+
+			curimg = (curimg < galleryarray.length - 1) ? curimg + 1 : 0;
+		};
+
+		shutterSound = function() {
+
+			click = document.getElementById("click");
+			click.pause();
+			click.currentTime = 0;
+			click.play();
+		};
+
+		setCardPixels = function() {
+
+			iW = card.width / 2;
+			iH = card.height;
+
+			cxL.drawImage(card, 0, 0, iW, iH, 0, 0, cW, cH);
+			cxR.drawImage(card, iW, 0, iW, iH, 0, 0, cW, cH);
+
+			var leftData = cxL.getImageData(0, 0, cW, cH);
+			var rightData = cxR.getImageData(0, 0, cW, cH);
+
+			leftData = barrelDistortion(leftData);
+			rightData = barrelDistortion(rightData);
+
+			cxM.putImageData(leftData, 0, 0);
+			cxM.putImageData(rightData, cW, 0);
+
+		};
+
+		document.addEventListener('mousedown', onDocumentMouseDown, false);
+		document.addEventListener('touchstart', onDocumentMouseDown, false);
+
+		// Handle window resizes
+		function onWindowResize() {
+			wW = window.innerWidth;
+			wH = window.innerHeight;
+			cW = wW * 0.5;
+			cH = wH;
+
+			cxM.clearRect(0, 0, wW, wH);
+
+			pageView.width = wW;
+			pageView.height = wH;
+			cL.width = cW;
+			cL.height = cH;
+			cR.width = cW;
+			cR.height = cH;
+
+			setCardPixels();
+
+		}
+
+		window.addEventListener('resize', onWindowResize, false);
+	</script>
+
+</body>
+
+</html>

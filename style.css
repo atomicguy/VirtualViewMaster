@@ -1,0 +1,97 @@
+<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/coelacanth" type="text/css" />
+<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/chicagoflf" type="text/css" />
+
+body {
+    background-color: #321513;
+}
+
+h2 {
+    color: #b2a992;
+    font-size: 5em;
+    font-family: 'ChicagoFLFRegular';
+    font-weight: normal;
+    font-style: normal;
+    text-align: center;
+}
+
+h3 {
+    color: #b2a992;
+    font-size: 3em;
+    font-family: 'CoelacanthCaptionRegular';
+    font-weight: normal;
+    font-style: normal;
+    text-align: center;
+}
+
+h4 {
+    color: #b2a992;
+    font-size: 1.5em;
+    font-family: 'CoelacanthItalic';
+    font-weight: normal;
+    font-style: italic;
+    text-align: center;
+}
+
+#stereoview {
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 0;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+#page {
+    height: 100.1%;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+
+.captionText {
+    color: #b2a37d;
+    font-size: 2.2em;
+    font-family: 'CoelacanthCaptionRegular';
+    font-weight: normal;
+    font-style: normal;
+    text-align: center;
+    height: 4em;
+    width: 40%;
+    position: fixed;
+    top: 33%;
+    margin: 5%;
+    z-index: 2;
+}
+
+#captionBox {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+#textLeft {
+    left: 0;
+    opacity: 1;
+    transition: 1s;
+}
+
+#textRight {
+    left: 50%;
+    opacity: 1;
+    transition: 1s;
+}
+
+.solid {
+    background-color: #321513;
+    opacity: 0.99;
+    transition: 2s;
+}
+
+.clear {
+    opacity: 0;
+    transition: 1s;
+}
