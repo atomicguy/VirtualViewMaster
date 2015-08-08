@@ -80,13 +80,13 @@ h4 {
 .clear {
     opacity: 0;
     transition: 0.65s;
-    transition-timing-function: ease-in;
+    transition-timing-function: ease-in-out;
 }
 .blank {
     opacity: 0;
     visibility: hidden;
     transition: 0.3s;
-    transition-timing-function: ease-out;
+    transition-timing-function: ease-in-out;
 }
 .visible {
     opacity: 1;

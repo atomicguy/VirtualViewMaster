@@ -42,11 +42,13 @@ function onDocumentMouseDown(event) {
         textRight.innerHTML = caption;
     } else {
         nextSlide();
-        textLeft.innerHTML = "";
-        textRight.innerHTML = "";
-        cBox.setAttribute('class', 'clear');
-        stereoView.setAttribute('class', 'visible');
-
+    }
+    if (curimg == 0) {
+	    document.getElementById('pageInfo').opacity="1";
+	    document.getElementById('pageInfo').visibility="visible";
+    } else {
+	    document.getElementById('pageInfo').opacity="0";
+	    document.getElementById('pageInfo').visibility="hidden";
     }
 }
 
@@ -54,6 +56,10 @@ card.onload = function() {
     setCardPixels();
     cxV.putImageData(leftData, 0, 0);
     cxV.putImageData(rightData, cW, 0);
+    textLeft.innerHTML = "";
+    textRight.innerHTML = "";
+    cBox.setAttribute('class', 'clear');
+    stereoView.setAttribute('class', 'visible');
 };
 
 
