@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+    <title>VintageVR</title>
+	<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/coelacanth" type="text/css" />
+	<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/chicagoflf" type="text/css" />
+    <link rel="stylesheet" media="screen" href="style.css" type="text/css">
+
+    <script type="text/javascript" src="js/cardlist.js"></script>
+    <script type="text/javascript" src="js/distort.js"></script>
+</head>
+
+<body>
+    <div id="page">
+        <canvas id="stereoview"></canvas>
+
+        <div id="pageInfo">
+            <h2>Assorted Stereoviews</h2>
+            <h3>(tap to advance)</h3>
+            <h4>for best results: view landscape via DYI-VR, or parallel freeview.</h4>
+        </div>
+
+        <audio id="click" preload="auto" src="slide_advance.m4a" type="audio/mp4">
+        	Your browser does not support mp4 files in the audio element.
+        </audio>
+
+        <div class="captionText" id="textLeft"></div>
+        <div class="captionText" id="textRight"></div>
+
+    </div>
+    <script type="text/javascript" src="js/stereoscope.js"></script>
+</body>
+</html>

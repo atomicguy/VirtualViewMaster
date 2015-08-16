@@ -33,7 +33,6 @@ h4 {
     padding: 0;
     z-index: 0;
     opacity: 1;
-    transition: 0.5s;
 }
 #page {
     height: 100.1%;
@@ -43,54 +42,42 @@ h4 {
 }
 .captionText {
     color: #b2a37d;
-    font-size: 1.9em;
+    font-size: 1.2em;
     font-family: 'CoelacanthCaptionRegular';
-    font-weight: normal;
     font-style: normal;
     text-align: center;
-    height: 4em;
-    width: 40%;
+    height: 10%;
+    width: 50%;
     position: fixed;
-    top: 22%;
-    margin: 5%;
+    top: 90%;
     z-index: 2;
 }
-#captionBox {
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 1;
-}
+
 #textLeft {
     left: 0;
     opacity: 1;
     transition: 1s;
+    transition-timing-function: ease-in-out;
 }
 #textRight {
     left: 50%;
     opacity: 1;
     transition: 1s;
-}
-.solid {
-    background-color: #321513;
-    opacity: 1;
-    transition: 0.1s;
-}
-.clear {
-    opacity: 0;
-    transition: 0.65s;
     transition-timing-function: ease-in-out;
 }
-.blank {
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
-    transition-timing-function: ease-in-out;
+.filledBox {
+	background-color: #321513;
 }
-.visible {
+
+.visibleCanvas {
     opacity: 1;
     visibility: visible;
     transition: 0.6s;
+    transition-timing-function: ease-in-out;
+}
+.hiddenCanvas {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
     transition-timing-function: ease-in-out;
 }
