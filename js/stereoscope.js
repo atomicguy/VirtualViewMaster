@@ -17,7 +17,10 @@ var wH = window.innerHeight;
 var cW = Math.round(wW * 0.5);
 var cH = Math.round(0.88 * wH);
 var canvasAspectRatio = cH / cW;
-// var ratioWH = cW / cH;
+var imageAspectRatio = Number();
+var cW2 = Number();
+var cH2 = Number();
+var offsetX = Number();
 
 // Initialize canvases
 var cL = document.createElement('canvas');
@@ -46,8 +49,6 @@ var curimg = 0;
 var card = new Image();
 var click;
 var caption = "";
-var newWidth = Number();
-var diff;
 var iW;
 var iH;
 var leftData;
@@ -130,37 +131,30 @@ function drawCanvas() {
 
     } else {
 
-        newWidth = Math.round(cH * iW / iH);
-        diff = Math.abs(Math.round((cW - newWidth) / 4));
+        // newWidth = Math.round(cH * iW / iH);
+        // diff = Math.abs(Math.round((cW - newWidth) / 4));
+        //
+        // cxL.clearRect(0, 0, newWidth, cH);
+        // cxR.clearRect(0, 0, newWidth, cH);
 
-        cxL.clearRect(0, 0, newWidth, cH);
-        cxR.clearRect(0, 0, newWidth, cH);
+        cxL.drawImage(card, 0, 0, iW, iH, 0, 0, cL.width, cL.height);
+        cxR.drawImage(card, iW, 0, iW, iH, 0, 0, cR.width, cR.height);
 
-        cxL.drawImage(card, 0, 0, iW, iH, 0, 0, cW, cH);
-        cxR.drawImage(card, iW, 0, iW, iH, 0, 0, cW, cH);
-
-        leftData = cxL.getImageData(0, 0, cW, cH);
-        rightData = cxR.getImageData(0, 0, cW, cH);
+        leftData = cxL.getImageData(0, 0, cL.width, cL.height);
+        rightData = cxR.getImageData(0, 0, cR.width, cR.height);
 
         leftData = barrelDistortion(leftData);
         rightData = barrelDistortion(rightData);
 
-        cL.setAttribute('width', newWidth);
-        cR.setAttribute('width', newWidth);
-
         cxL.putImageData(leftData, 0, 0);
         cxR.putImageData(rightData, 0, 0);
 
-        leftCardOriginX = diff;
-        rightCardOriginX = cW + diff;
+        leftCardOriginX = offsetX;
+        rightCardOriginX = cW + offsetX;
 
-        cxV.drawImage(cL, 0, 0);
-        cxV.drawImage(cR, cW, 0);
+        cxV.drawImage(cL, leftCardOriginX, 0);
+        cxV.drawImage(cR, rightCardOriginX, 0);
 
-        /*
-                cxV.putImageData(leftData, leftCardOriginX, leftCardOriginY);
-                cxV.putImageData(rightData, rightCardOriginX, rightCardOriginY);
-        */
         sV.setAttribute('class', 'visibleCanvas');
     }
 
@@ -186,30 +180,38 @@ function drawCanvas() {
 function getImageSize() {
     "use strict";
 
+    cxL.clearRect(0,0, cL.width, cL.height);
+    cxR.clearRect(0,0, cR.width, cR.height);
+
     if (card.height === 0) {
         iW = 1;
         iH = 1;
-        ratioWH = 1;
 
     } else {
 
         iW = Math.round(card.width * 0.5);
         iH = card.height;
-
-        var imageAspectRatio = iH / iW;
-        var cW2 = Math.round(iH / imageAspectRatio);
-        var cH2 = Math.round(iW * imageAspectRatio);
+        imageAspectRatio = iH / iW;
+        cH2 = Math.round(cW * imageAspectRatio);
+        cW2 = Math.round(cH / imageAspectRatio);
 
         if (imageAspectRatio > canvasAspectRatio) {
             cL.setAttribute('height', cH);
             cL.setAttribute('width', cW2);
             cR.setAttribute('height', cH);
             cR.setAttribute('width', cW2);
+            offsetX = Math.round((cW - cW2)/2);
+            cxL = cL.getContext('2d');
+            cxR = cR.getContext('2d');
+
         } else {
             cL.setAttribute('height', cH2);
             cL.setAttribute('width', cW);
             cR.setAttribute('height', cH2);
             cR.setAttribute('width', cW);
+            offsetX = 0;
+            cxL = cL.getContext('2d');
+            cxR = cR.getContext('2d');
         }
 
         leftData = cxL.createImageData(iW, iH);
